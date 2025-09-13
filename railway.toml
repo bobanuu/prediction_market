@@ -2,4 +2,4 @@
 builder = "NIXPACKS"
 
 [deploy]
-startCommand = "chmod +x start.sh && ./start.sh"
+startCommand = "python manage.py migrate && python manage.py collectstatic --noinput && python manage.py shell -c \"from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@test.com', 'admin123') if not User.objects.filter(username='admin').exists() else None\" && python manage.py shell -c \"exec(open('create_sample_data.py').read())\" && gunicorn prediction_marketplace.wsgi:application --bind 0.0.0.0:$PORT"
