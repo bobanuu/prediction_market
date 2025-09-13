@@ -22,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-p-&#n+_ny2axw90r#3em#($njy&d&56kthl0$@p7lg7a4-mcsq'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-p-&#\n+_ny2axw90r#3em#($njy&d&56kthl0$@p7lg7a4-mcsq')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True').lower() in ['true', '1', 'yes']
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -81,10 +81,7 @@ WSGI_APPLICATION = 'prediction_marketplace.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse(os.environ.get('DATABASE_URL', 'sqlite:///db.sqlite3'))
 }
 
 
@@ -130,12 +127,18 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS settings
-CORS_ALLOW_ALL_ORIGINS = True  # Only for development
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "http://127.0.0.1:3000",
+    "https://your-vercel-app.vercel.app",  # Update this with your actual Vercel URL
 ]
+
+# Update CORS settings for production
+if os.environ.get('VERCEL_URL'):
+    CORS_ALLOWED_ORIGINS = [
+        f"https://{os.environ.get('VERCEL_URL')}",
+        "http://localhost:3000",
+    ]
 
 # REST Framework settings
 REST_FRAMEWORK = {
@@ -149,19 +152,3 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     ],
 }
-
-# Production settings
-if os.environ.get('DATABASE_URL'):
-    DATABASES = {
-        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
-    }
-
-# Allow all hosts in production
-ALLOWED_HOSTS = ['*']
-
-# Update CORS settings for production
-if os.environ.get('VERCEL_URL'):
-    CORS_ALLOWED_ORIGINS = [
-        f"https://{os.environ.get('VERCEL_URL')}",
-        "http://localhost:3000",
-    ]
