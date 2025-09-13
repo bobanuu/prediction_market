@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
@@ -21,11 +21,7 @@ const MarketDetail = () => {
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState('');
 
-  useEffect(() => {
-    fetchMarketData();
-  }, [id]);
-
-  const fetchMarketData = async () => {
+  const fetchMarketData = useCallback(async () => {
     try {
       const [marketResponse, sharesResponse, orderBookResponse] = await Promise.all([
         axios.get(API_ENDPOINTS.MARKETS.DETAIL(id), { withCredentials: true }),
@@ -56,7 +52,11 @@ const MarketDetail = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    fetchMarketData();
+  }, [fetchMarketData]);
 
   const handleOrderChange = (e) => {
     const { name, value } = e.target;
