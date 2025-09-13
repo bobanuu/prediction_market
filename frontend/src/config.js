@@ -12,11 +12,11 @@ export const API_ENDPOINTS = {
     PORTFOLIO: `${API_BASE_URL}/api/accounts/portfolio/`,
   },
   MARKETS: {
-    LIST: `${API_BASE_URL}/api/markets/`,
-    DETAIL: (id) => `${API_BASE_URL}/api/markets/${id}/`,
-    ORDER_BOOK: (id) => `${API_BASE_URL}/api/markets/${id}/order-book/`,
+    LIST: `${API_BASE_URL}/api/markets/markets/`,
+    DETAIL: (id) => `${API_BASE_URL}/api/markets/markets/${id}/`,
+    ORDER_BOOK: (id) => `${API_BASE_URL}/api/markets/markets/${id}/orderbook/YES/`,
     PLACE_ORDER: `${API_BASE_URL}/api/markets/place-order/`,
-    CANCEL_ORDER: `${API_BASE_URL}/api/markets/cancel-order/`,
+    CANCEL_ORDER: `${API_BASE_URL}/api/markets/orders/`,
   }
 };
 
