@@ -1,1 +1,1 @@
-web: python manage.py migrate && gunicorn prediction_marketplace.wsgi:application --bind 0.0.0.0:$PORT
+web: python manage.py migrate && python manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@test.com', 'admin123') if not User.objects.filter(username='admin').exists() else None" && gunicorn prediction_marketplace.wsgi:application --bind 0.0.0.0:$PORT
