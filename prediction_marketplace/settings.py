@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -147,3 +149,19 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     ],
 }
+
+# Production settings
+if os.environ.get('DATABASE_URL'):
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+    }
+
+# Allow all hosts in production
+ALLOWED_HOSTS = ['*']
+
+# Update CORS settings for production
+if os.environ.get('VERCEL_URL'):
+    CORS_ALLOWED_ORIGINS = [
+        f"https://{os.environ.get('VERCEL_URL')}",
+        "http://localhost:3000",
+    ]
