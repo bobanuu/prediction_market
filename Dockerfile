@@ -34,12 +34,12 @@ python manage.py shell -c "from django.contrib.auth.models import User; User.obj
 echo "Creating sample data..."\n\
 python manage.py shell -c "exec(open('\''create_sample_data.py'\'').read())"\n\
 echo "Starting Gunicorn server..."\n\
-gunicorn prediction_marketplace.wsgi:application --bind 0.0.0.0:$PORT' > /app/start.sh
+exec gunicorn prediction_marketplace.wsgi:application --bind 0.0.0.0:${PORT:-8080}' > /app/start.sh
 
 RUN chmod +x /app/start.sh
 
 # Expose port
-EXPOSE $PORT
+EXPOSE 8080
 
 # Run startup script
 CMD ["./start.sh"]
