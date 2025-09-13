@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
+import { API_ENDPOINTS } from '../config';
 
 const MarketDetail = () => {
   const { id } = useParams();
@@ -27,9 +28,9 @@ const MarketDetail = () => {
   const fetchMarketData = async () => {
     try {
       const [marketResponse, sharesResponse, orderBookResponse] = await Promise.all([
-        axios.get(`http://localhost:8000/api/markets/markets/${id}/`, { withCredentials: true }),
-        axios.get('http://localhost:8000/api/markets/shares/', { withCredentials: true }),
-        axios.get(`http://localhost:8000/api/markets/markets/${id}/orderbook/YES/`, { withCredentials: true })
+        axios.get(API_ENDPOINTS.MARKETS.DETAIL(id), { withCredentials: true }),
+        axios.get(API_ENDPOINTS.ACCOUNTS.PORTFOLIO, { withCredentials: true }),
+        axios.get(API_ENDPOINTS.MARKETS.ORDER_BOOK(id), { withCredentials: true })
       ]);
       
       setMarket(marketResponse.data);
@@ -81,7 +82,7 @@ const MarketDetail = () => {
         delete orderData.price;
       }
 
-      const response = await axios.post('http://localhost:8000/api/markets/place-order/', 
+      const response = await axios.post(API_ENDPOINTS.MARKETS.PLACE_ORDER, 
         orderData, 
         { withCredentials: true }
       );

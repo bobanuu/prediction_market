@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { API_ENDPOINTS } from '../config';
 
 const Dashboard = () => {
   const [markets, setMarkets] = useState([]);
@@ -14,8 +15,8 @@ const Dashboard = () => {
   const fetchData = async () => {
     try {
       const [marketsResponse, sharesResponse] = await Promise.all([
-        axios.get('http://localhost:8000/api/markets/markets/', { withCredentials: true }),
-        axios.get('http://localhost:8000/api/markets/shares/', { withCredentials: true })
+        axios.get(API_ENDPOINTS.MARKETS.LIST, { withCredentials: true }),
+        axios.get(API_ENDPOINTS.ACCOUNTS.PORTFOLIO, { withCredentials: true })
       ]);
       
       setMarkets(marketsResponse.data.slice(0, 5)); // Show only first 5 markets

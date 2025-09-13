@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { API_ENDPOINTS } from '../config';
 
 const Markets = () => {
   const [markets, setMarkets] = useState([]);
@@ -12,7 +13,7 @@ const Markets = () => {
 
   const fetchMarkets = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/markets/markets/', { withCredentials: true });
+      const response = await axios.get(API_ENDPOINTS.MARKETS.LIST, { withCredentials: true });
       setMarkets(response.data);
     } catch (error) {
       console.error('Error fetching markets:', error);

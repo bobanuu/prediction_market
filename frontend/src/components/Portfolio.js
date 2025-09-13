@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_ENDPOINTS } from '../config';
 
 const Portfolio = () => {
   const [shares, setShares] = useState([]);
@@ -13,8 +14,8 @@ const Portfolio = () => {
   const fetchPortfolioData = async () => {
     try {
       const [sharesResponse, transactionsResponse] = await Promise.all([
-        axios.get('http://localhost:8000/api/markets/shares/', { withCredentials: true }),
-        axios.get('http://localhost:8000/api/accounts/transactions/', { withCredentials: true })
+        axios.get(API_ENDPOINTS.ACCOUNTS.PORTFOLIO, { withCredentials: true }),
+        axios.get(`${API_ENDPOINTS.ACCOUNTS.ACCOUNT}transactions/`, { withCredentials: true })
       ]);
       
       setShares(sharesResponse.data);

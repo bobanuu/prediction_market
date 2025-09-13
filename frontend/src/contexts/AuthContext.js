@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_ENDPOINTS } from '../config';
 
 const AuthContext = createContext();
 
@@ -21,7 +22,7 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuthStatus = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/accounts/account/', {
+      const response = await axios.get(API_ENDPOINTS.ACCOUNTS.ACCOUNT, {
         withCredentials: true
       });
       setUser(response.data);
@@ -38,7 +39,7 @@ export const AuthProvider = ({ children }) => {
       params.append('username', username);
       params.append('password', password);
 
-      await axios.post('http://localhost:8000/api/auth/login/', params, {
+      await axios.post(API_ENDPOINTS.AUTH.LOGIN, params, {
         withCredentials: true,
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -57,7 +58,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (username, email, password) => {
     try {
-      await axios.post('http://localhost:8000/api/auth/register/', {
+      await axios.post(API_ENDPOINTS.AUTH.REGISTER, {
         username,
         email,
         password
@@ -74,7 +75,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post('http://localhost:8000/api/auth/logout/', {}, {
+      await axios.post(API_ENDPOINTS.AUTH.LOGOUT, {}, {
         withCredentials: true
       });
     } catch (error) {
