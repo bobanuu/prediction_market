@@ -35,9 +35,9 @@ def create_sample_data():
             'email': 'trader1@example.com'
         }
     )
-    if created:
-        user.set_password('password123')
-        user.save()
+    # Always set the password to ensure it's correct
+    user.set_password('trader123')
+    user.save()
     
     # Create accounts for users
     Account.objects.get_or_create(user=admin_user, defaults={'balance': 10000.00})
@@ -86,7 +86,7 @@ def create_sample_data():
     
     print("Sample data created successfully!")
     print(f"Admin user: admin / admin123")
-    print(f"Regular user: trader1 / password123")
+    print(f"Regular user: trader1 / trader123")
 
 def seed_market_liquidity(market, user):
     """Seed a market with initial liquidity"""
